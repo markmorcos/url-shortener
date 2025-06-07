@@ -1,0 +1,20 @@
+[package]
+name = "url-shortener"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+redis = { version = "0.24", features = ["tokio-comp"] }
+nanoid = "0.4"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["fs", "cors"] }
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+dotenvy = "0.15"
+base64 = "0.22"
+url = "2.5"
