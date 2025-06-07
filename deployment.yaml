@@ -1,0 +1,32 @@
+chartVersion: 0.2.11
+
+project:
+  name: url-shortener
+
+repository:
+  name: markmorcos/url-shortener
+  path: .
+
+ingress:
+  host: rdr.cx
+  rules:
+    - host: rdr.cx
+      path: /?(.*)
+      pathType: ImplementationSpecific
+      serviceName: url-shortener-service
+
+deployments:
+  - name: url-shortener-deployment
+    image: markmorcos/url-shortener
+    env:
+      - name: BASE_URL
+        value: https://rdr.cx
+      - name: REDIS_URL
+        valueFrom:
+          secretKeyRef:
+            name: redis-secret
+            key: REDIS_URL
+
+services:
+  - name: url-shortener-service
+    port: 3000
