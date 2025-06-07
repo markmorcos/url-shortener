@@ -130,7 +130,6 @@
       }
 
       .copy-btn {
-        margin-left: 10px;
         padding: 8px 15px;
         font-size: 14px;
         background: #28a745;
@@ -158,10 +157,13 @@
       .loading {
         display: none;
         margin-top: 10px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
       }
 
       .loading.show {
-        display: block;
+        display: flex;
       }
 
       .spinner {
@@ -184,6 +186,10 @@
       }
 
       @media (max-width: 600px) {
+        body {
+          align-items: flex-start;
+        }
+
         .container {
           padding: 30px 20px;
         }
@@ -194,11 +200,6 @@
 
         .input-group {
           flex-direction: column;
-        }
-
-        .copy-btn {
-          margin-left: 0;
-          margin-top: 10px;
         }
       }
     </style>
@@ -221,7 +222,7 @@
 
       <div class="loading" id="loading">
         <div class="spinner"></div>
-        <span style="margin-left: 10px">Shortening your URL...</span>
+        <span>Shortening your URL...</span>
       </div>
 
       <div class="error" id="error"></div>
@@ -234,6 +235,7 @@
             align-items: center;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 10px;
           "
         >
           <a href="#" id="shortUrl" class="short-url" target="_blank"></a>
