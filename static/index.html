@@ -3,384 +3,176 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>URL Shortener</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+
+    <!-- SEO Meta Tags -->
+    <title>Free URL Shortener - Fast & Reliable Link Shortening Service</title>
+    <meta
+      name="description"
+      content="Shorten your long URLs instantly with our free, fast, and reliable URL shortener. Create custom short links, track clicks, and share easily on social media."
+    />
+    <meta
+      name="keywords"
+      content="URL shortener, link shortener, short URL, shorten link, custom URL, link management, free URL shortener"
+    />
+    <meta name="author" content="URL Shortener" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rdr.cx/" />
+    <meta
+      property="og:title"
+      content="Free URL Shortener - Fast & Reliable Link Shortening Service"
+    />
+    <meta
+      property="og:description"
+      content="Shorten your long URLs instantly with our free, fast, and reliable URL shortener. Create custom short links and share easily."
+    />
+    <meta property="og:image" content="https://rdr.cx/static/og-image.png" />
+    <meta property="og:site_name" content="URL Shortener" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://rdr.cx/" />
+    <meta
+      property="twitter:title"
+      content="Free URL Shortener - Fast & Reliable Link Shortening Service"
+    />
+    <meta
+      property="twitter:description"
+      content="Shorten your long URLs instantly with our free, fast, and reliable URL shortener. Create custom short links and share easily."
+    />
+    <meta
+      property="twitter:image"
+      content="https://rdr.cx/static/og-image.png"
+    />
+
+    <!-- Additional SEO -->
+    <link rel="canonical" href="https://rdr.cx/" />
+    <meta name="theme-color" content="#4f46e5" />
+
+    <link rel="stylesheet" href="static/style.css?v=1" />
+    <link rel="icon" href="static/favicon.ico" type="image/x-icon" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "URL Shortener",
+        "description": "Free, fast, and reliable URL shortening service",
+        "url": "https://rdr.cx/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "URL Shortening",
+          "Custom Short Links",
+          "Fast Redirects",
+          "Free Service"
+        ]
       }
-
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-
-      .container {
-        background: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        width: 100%;
-        text-align: center;
-      }
-
-      h1 {
-        color: #333;
-        margin-bottom: 30px;
-        font-size: 2.5em;
-        font-weight: 300;
-      }
-
-      .url-form {
-        margin-bottom: 30px;
-      }
-
-      .input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 20px;
-      }
-
-      input[type="url"] {
-        padding: 15px 20px;
-        border: 2px solid #e1e5e9;
-        border-radius: 10px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        outline: none;
-      }
-
-      input[type="url"]:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-      }
-
-      button {
-        padding: 15px 30px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        outline: none;
-      }
-
-      button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-      }
-
-      button:active {
-        transform: translateY(0);
-      }
-
-      button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-      }
-
-      .result {
-        margin-top: 30px;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
-        display: none;
-      }
-
-      .result.show {
-        display: block;
-        animation: slideIn 0.3s ease;
-      }
-
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .short-url {
-        color: #667eea;
-        font-weight: 600;
-        text-decoration: none;
-        word-break: break-all;
-        font-size: 18px;
-      }
-
-      .short-url:hover {
-        text-decoration: underline;
-      }
-
-      .copy-btn {
-        padding: 8px 15px;
-        font-size: 14px;
-        background: #28a745;
-        min-width: auto;
-      }
-
-      .copy-btn:hover {
-        background: #218838;
-      }
-
-      .error {
-        color: #dc3545;
-        margin-top: 10px;
-        padding: 10px;
-        background: #f8d7da;
-        border-radius: 5px;
-        border-left: 4px solid #dc3545;
-        display: none;
-      }
-
-      .error.show {
-        display: block;
-      }
-
-      .loading {
-        display: none;
-        margin-top: 10px;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-      }
-
-      .loading.show {
-        display: flex;
-      }
-
-      .spinner {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #667eea;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      @media (max-width: 600px) {
-        body {
-          align-items: flex-start;
-        }
-
-        .container {
-          padding: 30px 20px;
-        }
-
-        h1 {
-          font-size: 2em;
-        }
-
-        .input-group {
-          flex-direction: column;
-        }
-      }
-    </style>
+    </script>
   </head>
   <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only">Skip to main content</a>
+
     <div class="container">
-      <h1>🔗 URL Shortener</h1>
+      <header>
+        <h1>🔗 URL Shortener</h1>
+        <p class="subtitle">
+          Transform long URLs into short, shareable links instantly
+        </p>
+      </header>
 
-      <form class="url-form" id="urlForm">
-        <div class="input-group">
-          <input
-            type="url"
-            id="urlInput"
-            placeholder="Enter your long URL here..."
-            required
-          />
-          <button type="submit" id="shortenBtn">Shorten URL</button>
-        </div>
-      </form>
-
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <span>Shortening your URL...</span>
-      </div>
-
-      <div class="error" id="error"></div>
-
-      <div class="result" id="result">
-        <p style="margin-bottom: 10px; color: #666">Your shortened URL:</p>
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-          "
+      <main id="main-content">
+        <form
+          class="url-form"
+          id="urlForm"
+          role="form"
+          aria-label="URL shortening form"
         >
-          <a href="#" id="shortUrl" class="short-url" target="_blank"></a>
-          <button
-            type="button"
-            class="copy-btn"
-            id="copyBtn"
-            onclick="copyToClipboard()"
-          >
-            Copy
-          </button>
+          <div class="input-group">
+            <label for="urlInput" class="sr-only">Enter URL to shorten</label>
+            <input
+              type="url"
+              id="urlInput"
+              placeholder="Enter your long URL here..."
+              aria-describedby="url-help"
+              required
+            />
+            <div id="url-help" class="sr-only">
+              Enter a valid URL starting with http:// or https://
+            </div>
+            <button
+              type="submit"
+              id="shortenBtn"
+              aria-describedby="shorten-help"
+            >
+              Shorten URL
+            </button>
+            <div id="shorten-help" class="sr-only">
+              Click to create a shortened version of your URL
+            </div>
+          </div>
+        </form>
+
+        <div class="loading" id="loading" role="status" aria-live="polite">
+          <div class="spinner"></div>
+          <span>Shortening your URL...</span>
         </div>
-      </div>
+
+        <div class="error" id="error" role="alert" aria-live="assertive"></div>
+
+        <div
+          class="result"
+          id="result"
+          role="region"
+          aria-label="Shortened URL result"
+        >
+          <p style="margin-bottom: 10px; color: #666">Your shortened URL:</p>
+          <div class="result-inner">
+            <a
+              href="#"
+              id="shortUrl"
+              class="short-url"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-describedby="short-url-desc"
+            ></a>
+            <div id="short-url-desc" class="sr-only">
+              Your shortened URL - opens in new tab
+            </div>
+            <button
+              type="button"
+              class="copy-btn"
+              id="copyBtn"
+              onclick="copyToClipboard()"
+              aria-describedby="copy-help"
+            >
+              Copy
+            </button>
+            <div id="copy-help" class="sr-only">
+              Copy the shortened URL to clipboard
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>
+          &copy; <span id="currentYear"></span> URL Shortener. Free & reliable
+          link shortening service.
+        </p>
+      </footer>
     </div>
 
-    <script>
-      const urlForm = document.getElementById("urlForm");
-      const urlInput = document.getElementById("urlInput");
-      const shortenBtn = document.getElementById("shortenBtn");
-      const loading = document.getElementById("loading");
-      const error = document.getElementById("error");
-      const result = document.getElementById("result");
-      const shortUrl = document.getElementById("shortUrl");
-      const copyBtn = document.getElementById("copyBtn");
-
-      urlForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const url = urlInput.value.trim();
-
-        if (!url) {
-          showError("Please enter a URL");
-          return;
-        }
-
-        // Basic URL validation
-        try {
-          new URL(url);
-        } catch {
-          showError(
-            "Please enter a valid URL (must include http:// or https://)"
-          );
-          return;
-        }
-
-        hideError();
-        hideResult();
-        showLoading();
-        disableForm();
-
-        try {
-          const response = await fetch("/api", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ url: url }),
-          });
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const data = await response.json();
-
-          shortUrl.href = data.short;
-          shortUrl.textContent = data.short;
-
-          hideLoading();
-          showResult();
-        } catch (err) {
-          hideLoading();
-          showError("Failed to shorten URL. Please try again.");
-          console.error("Error:", err);
-        } finally {
-          enableForm();
-        }
-      });
-
-      function showLoading() {
-        loading.classList.add("show");
-      }
-
-      function hideLoading() {
-        loading.classList.remove("show");
-      }
-
-      function showError(message) {
-        error.textContent = message;
-        error.classList.add("show");
-      }
-
-      function hideError() {
-        error.classList.remove("show");
-      }
-
-      function showResult() {
-        result.classList.add("show");
-      }
-
-      function hideResult() {
-        result.classList.remove("show");
-      }
-
-      function disableForm() {
-        urlInput.disabled = true;
-        shortenBtn.disabled = true;
-      }
-
-      function enableForm() {
-        urlInput.disabled = false;
-        shortenBtn.disabled = false;
-      }
-
-      async function copyToClipboard() {
-        try {
-          await navigator.clipboard.writeText(shortUrl.href);
-          const originalText = copyBtn.textContent;
-          copyBtn.textContent = "Copied!";
-          copyBtn.style.background = "#28a745";
-
-          setTimeout(() => {
-            copyBtn.textContent = originalText;
-            copyBtn.style.background = "";
-          }, 2000);
-        } catch (err) {
-          // Fallback for older browsers
-          const textArea = document.createElement("textarea");
-          textArea.value = shortUrl.href;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand("copy");
-          document.body.removeChild(textArea);
-
-          const originalText = copyBtn.textContent;
-          copyBtn.textContent = "Copied!";
-
-          setTimeout(() => {
-            copyBtn.textContent = originalText;
-          }, 2000);
-        }
-      }
-
-      // Auto-focus the input field
-      urlInput.focus();
-    </script>
+    <script src="static/script.js?v=1"></script>
   </body>
 </html>
