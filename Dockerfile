@@ -1,18 +1,24 @@
 FROM rust:slim AS builder
 
-RUN rustup target add aarch64-unknown-linux-musl
+# Static musl build so the binary runs in `FROM scratch` (no libc there).
+# Each arch builds on its own native runner, so target the host's own arch —
+# uname -m ("x86_64" / "aarch64") matches the rust musl triple prefix exactly.
+# (Hardcoding aarch64 broke the amd64 runner, which then cross-linked with ld.)
+RUN rustup target add "$(uname -m)-unknown-linux-musl"
 
 WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs && cargo fetch
 
 COPY . .
-RUN cargo build --release --target aarch64-unknown-linux-musl
+RUN MUSL_TARGET="$(uname -m)-unknown-linux-musl" && \
+    cargo build --release --target "$MUSL_TARGET" && \
+    cp "target/$MUSL_TARGET/release/url-shortener" /url-shortener
 
 FROM scratch
 
 WORKDIR /app
-COPY --from=builder /app/target/aarch64-unknown-linux-musl/release/url-shortener ./url-shortener
+COPY --from=builder /url-shortener ./url-shortener
 COPY static ./static
 
 EXPOSE 3000
